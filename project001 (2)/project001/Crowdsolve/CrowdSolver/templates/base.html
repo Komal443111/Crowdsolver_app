@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>{% block title %}Dashboard{% endblock %}</title>
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    margin:0;
+    background:#f5f7fb;
+    display:flex;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar{
+    width:240px;
+    background:#134e4a;
+    color:#fff;
+    min-height:100vh;
+    padding:28px 20px;
+    display:flex;
+    flex-direction:column;
+}
+
+.sidebar h2{
+    margin:0 0 30px;
+    font-size:22px;          /* ⬆ bigger */
+    font-weight:600;
+}
+
+/* LINKS */
+.sidebar a{
+    color:#e6fffa;
+    text-decoration:none;
+    padding:12px 14px;
+    border-radius:8px;
+    margin-bottom:10px;
+    font-size:16px;          /* ⬆ bigger */
+}
+
+.sidebar a:hover{
+    background:rgba(255,255,255,0.15);
+}
+
+/* USER INFO */
+.user-info{
+    margin-top:auto;
+    padding-top:18px;
+    border-top:1px solid rgba(255,255,255,0.25);
+    font-size:16px;          /* ⬆ bigger */
+}
+
+.user-info a{
+    display:inline-block;
+    margin-top:8px;
+    font-size:15px;          /* ⬆ bigger */
+    color:#99f6e4;
+    text-decoration:none;
+}
+
+.user-info a:hover{
+    text-decoration:underline;
+}
+
+/* ===== MAIN ===== */
+.main{
+    flex:1;
+    padding:36px;
+}
+
+.header h3{
+    margin:0 0 24px;
+    font-size:26px;          /* ⬆ bigger */
+    color:#134e4a;
+}
+</style>
+
+{% block extra_css %}{% endblock %}
+</head>
+
+<body>
+
+<!-- SIDEBAR -->
+<div class="sidebar">
+    <h2>Residential</h2>
+
+    <a href="{% url 'admindashboard' %}">Dashboard</a>
+    <a href="{% url 'issuereport' %}">Issues</a>
+    <a href="{% url 'voting' %}">Voting</a>
+    <a href="{% url 'notification' %}">Notifications</a>
+    <a href="{% url 'user_solutions' %}">Solutions</a>
+
+    {% if request.session.member_id %}
+        <div class="user-info">
+            Welcome, <strong>{{ request.session.member_name }}</strong><br>
+            <a href="{% url 'memberlogout' %}">Logout</a>
+        </div>
+    {% else %}
+        <a href="{% url 'memberlogin' %}">Login</a>
+        <a href="{% url 'membersignup' %}">Sign Up</a>
+    {% endif %}
+</div>
+
+<!-- PAGE CONTENT -->
+<div class="main">
+    {% block content %}{% endblock %}
+</div>
+
+</body>
+</html>

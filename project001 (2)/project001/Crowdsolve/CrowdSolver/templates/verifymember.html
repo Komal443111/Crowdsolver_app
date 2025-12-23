@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Verify Member</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    margin:0;
+    min-height:100vh;
+    background:#f0fdfa; /* light teal */
+    display:flex;
+    align-items:center;
+    justify-content:center;
+}
+
+/* CARD */
+.verify-card{
+    width:100%;
+    max-width:420px;
+    background:#ffffff;
+    padding:36px 32px;
+    border-radius:18px;
+    box-shadow:0 14px 32px rgba(0,0,0,0.08);
+    text-align:center;
+}
+
+/* TITLE */
+.verify-title{
+    margin:0 0 8px;
+    font-size:24px;
+    font-weight:600;
+    color:#134e4a;
+}
+
+.verify-sub{
+    font-size:15px;
+    color:#475569;
+    margin-bottom:24px;
+}
+
+/* FORM */
+.verify-form{
+    text-align:left;
+}
+
+.verify-form label{
+    font-size:14px;
+    font-weight:500;
+    color:#134e4a;
+    display:block;
+    margin-bottom:6px;
+}
+
+.verify-form input{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+    font-size:18px;
+    text-align:center;
+    letter-spacing:4px;
+    margin-bottom:18px;
+}
+
+.verify-form input:focus{
+    outline:none;
+    border-color:#0f766e;
+}
+
+/* BUTTON */
+.verify-btn{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:14px;
+    background:#0f766e;
+    color:#ffffff;
+    font-size:16px;
+    font-weight:500;
+    cursor:pointer;
+}
+
+.verify-btn:hover{
+    background:#115e59;
+}
+
+/* ERROR */
+.verify-error{
+    margin-top:14px;
+    font-size:14px;
+    color:#dc2626;
+}
+</style>
+</head>
+
+<body>
+
+<div class="verify-card">
+    <h2 class="verify-title">OTP Verification</h2>
+    <p class="verify-sub">Enter the OTP sent to your email</p>
+
+    <form method="POST" class="verify-form">
+        {% csrf_token %}
+
+        <label>Enter OTP</label>
+        <input type="text" name="motp" placeholder="• • • •" required>
+
+        <button type="submit" class="verify-btn">Verify OTP</button>
+    </form>
+
+    {% if err %}
+        <p class="verify-error">{{ err }}</p>
+    {% endif %}
+</div>
+
+</body>
+</html>

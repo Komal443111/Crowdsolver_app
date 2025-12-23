@@ -1,0 +1,110 @@
+{% extends "base.html" %}
+
+{% block title %}Issues | Residential{% endblock %}
+
+{% block extra_css %}
+<style>
+/* PAGE HEADER */
+.issue-header{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    margin-bottom:28px;
+}
+
+.issue-header h2{
+    margin:0;
+    font-size:26px;
+    color:#134e4a;
+}
+
+/* RAISE ISSUE BUTTON */
+.raise-btn{
+    background:#0f766e;
+    color:#ffffff;
+    padding:12px 18px;
+    border-radius:14px;
+    text-decoration:none;
+    font-size:14px;
+    font-weight:500;
+}
+
+.raise-btn:hover{
+    background:#115e59;
+}
+
+/* ISSUE GRID */
+.issue-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
+    gap:22px;
+}
+
+/* ISSUE CARD */
+.issue-card{
+    background:#ffffff;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+.issue-card h4{
+    margin:0 0 10px;
+    font-size:18px;
+    color:#0f766e;
+}
+
+.issue-desc{
+    font-size:14px;
+    color:#475569;
+    line-height:1.6;
+    margin-bottom:14px;
+}
+
+/* META */
+.issue-meta{
+    display:flex;
+    justify-content:space-between;
+    font-size:13px;
+    color:#64748b;
+}
+
+/* EMPTY STATE */
+.empty{
+    text-align:center;
+    margin-top:60px;
+    font-size:15px;
+    color:#64748b;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<!-- HEADER -->
+<div class="issue-header">
+    <h2>Community Issues</h2>
+    <a href="{% url 'raise_issue' %}" class="raise-btn">+ Raise Issue</a>
+</div>
+
+<!-- ISSUE LIST -->
+<div class="issue-grid">
+{% for issue in issues %}
+    <div class="issue-card">
+        <h4>{{ issue.title }}</h4>
+
+        <div class="issue-desc">
+            {{ issue.description }}
+        </div>
+
+        <div class="issue-meta">
+            <span>Flat {{ issue.flat_number }}</span>
+            <span>{{ issue.created_by }}</span>
+        </div>
+    </div>
+{% empty %}
+</div>
+<div class="empty">No issues reported yet.</div>
+{% endfor %}
+
+{% endblock %}

@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+{% block title %}Community Solutions{% endblock %}
+
+{% block extra_css %}
+<style>
+.solution-wrap{
+    max-width:900px;
+}
+
+/* SECTION */
+.section{
+    margin-bottom:32px;
+}
+
+.section h3{
+    margin-bottom:14px;
+    font-size:20px;
+}
+
+/* CARDS */
+.solution-card{
+    background:#fff;
+    padding:14px 16px;
+    border-radius:10px;
+    box-shadow:0 6px 16px rgba(0,0,0,0.06);
+    margin-bottom:12px;
+    font-size:15px;
+}
+
+/* SELECTED */
+.selected{
+    border-left:4px solid #16a34a;
+    background:#ecfdf5;
+}
+
+/* REJECTED */
+.rejected{
+    border-left:4px solid #dc2626;
+    background:#fef2f2;
+    color:#6b7280;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="solution-wrap">
+    <h2>Community Solutions</h2>
+    <p>Final result based on voting</p>
+
+    <!-- SELECTED -->
+    <div class="section">
+        <h3>✅ Selected Solutions</h3>
+
+        {% for s in solutions %}
+            {% if s.approve_votes > s.reject_votes %}
+            <div class="solution-card selected">
+                <strong>{{ s.issue.title }}</strong><br>
+                {{ s.solution_description }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+
+    <!-- REJECTED -->
+    <div class="section">
+        <h3>❌ Rejected Solutions</h3>
+
+        {% for s in solutions %}
+            {% if s.approve_votes <= s.reject_votes %}
+            <div class="solution-card rejected">
+                <strong>{{ s.issue.title }}</strong><br>
+                {{ s.solution_description }}
+            </div>
+            {% endif %}
+        {% endfor %}
+    </div>
+</div>
+
+{% endblock %}

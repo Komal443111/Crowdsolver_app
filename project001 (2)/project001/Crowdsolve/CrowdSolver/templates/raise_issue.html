@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Raise Issue</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+
+<style>
+*{
+    box-sizing:border-box;
+    font-family:'Poppins',sans-serif;
+}
+
+body{
+    margin:0;
+    background:#f0fdfa;
+    min-height:100vh;
+}
+
+/* HEADER */
+.top-bar{
+    background:#ffffff;
+    padding:18px 40px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    box-shadow:0 8px 20px rgba(0,0,0,0.06);
+}
+
+.top-bar h1{
+    margin:0;
+    font-size:22px;
+    color:#134e4a;
+}
+
+.btn-back{
+    text-decoration:none;
+    font-size:14px;
+    color:#0f766e;
+    font-weight:500;
+}
+
+/* CONTAINER */
+.container{
+    display:flex;
+    justify-content:center;
+    padding:40px 20px;
+}
+
+/* CARD */
+.form-card{
+    background:#ffffff;
+    width:100%;
+    max-width:720px;
+    padding:36px;
+    border-radius:20px;
+    box-shadow:0 18px 40px rgba(0,0,0,0.08);
+}
+
+.form-card h2{
+    margin:0 0 24px;
+    color:#0f766e;
+    font-size:26px;
+}
+
+/* FORM */
+.form-group{
+    margin-bottom:18px;
+}
+
+label{
+    display:block;
+    margin-bottom:6px;
+    font-size:14px;
+    font-weight:500;
+    color:#334155;
+}
+
+input,
+select,
+textarea{
+    width:100%;
+    padding:14px;
+    border-radius:12px;
+    border:1px solid #cbd5e1;
+    font-size:14px;
+    outline:none;
+}
+
+textarea{
+    resize:none;
+    height:120px;
+}
+
+input:focus,
+select:focus,
+textarea:focus{
+    border-color:#0f766e;
+}
+
+/* BUTTON */
+.submit-btn{
+    margin-top:12px;
+    background:#0f766e;
+    color:#ffffff;
+    border:none;
+    padding:14px 26px;
+    border-radius:14px;
+    font-size:15px;
+    font-weight:500;
+    cursor:pointer;
+}
+
+.submit-btn:hover{
+    background:#115e59;
+}
+
+/* RESPONSIVE */
+@media(max-width:700px){
+    .top-bar{
+        padding:16px 20px;
+    }
+
+    .form-card{
+        padding:28px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<div class="top-bar">
+    <h1>Issue Management</h1>
+    <a href="{% url 'issuereport' %}" class="btn-back">← Back to Issues</a>
+</div>
+
+<!-- FORM -->
+<div class="container">
+    <div class="form-card">
+
+        <h2>Raise New Issue</h2>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <div class="form-group">
+                <label>Issue Title</label>
+                <input type="text" name="title" placeholder="Enter issue title" required>
+            </div>
+
+            <div class="form-group">
+                <label>Category</label>
+                <select name="category" required>
+                    <option value="">Select category</option>
+                    {% for cat in category %}
+                        <option value="{{ cat.id }}">{{ cat.category_name }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label>Description</label>
+                <textarea name="description" placeholder="Describe the issue clearly" required></textarea>
+            </div>
+
+            <div class="form-group">
+                <label>Flat Number</label>
+                <input type="text" name="flat_number" placeholder="e.g. A-203" required>
+            </div>
+
+            <div class="form-group">
+                <label>Upload Image (optional)</label>
+                <input type="file" name="image">
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Issue</button>
+
+        </form>
+
+    </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,149 @@
+{% extends "base.html" %}
+
+{% block title %}Dashboard{% endblock %}
+
+{% block extra_css %}
+<style>
+/* ===== DASHBOARD UI ENHANCEMENTS ===== */
+
+.cards{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:22px;
+    margin-bottom:35px;
+}
+
+.card{
+    background:#ffffff;
+    padding:24px;
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    position:relative;
+    overflow:hidden;
+}
+
+.card::after{
+    content:'';
+    position:absolute;
+    top:0;
+    right:0;
+    width:70px;
+    height:70px;
+    background:rgba(43,108,176,0.08);
+    border-radius:0 0 0 100%;
+}
+
+.card h4{
+    margin:0;
+    font-size:14px;
+    color:#6b7280;
+}
+
+.card span{
+    font-size:34px;
+    font-weight:600;
+    color:#1e3a8a;
+    margin-top:10px;
+    display:block;
+}
+
+/* ===== TABLE ===== */
+
+.table-box{
+    background:#ffffff;
+    padding:24px;
+    border-radius:16px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+}
+
+.table-box h4{
+    margin:0 0 16px;
+    color:#1f2937;
+}
+
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+th{
+    text-align:left;
+    padding:14px;
+    background:#f8fafc;
+    color:#6b7280;
+    font-weight:600;
+}
+
+td{
+    padding:14px;
+    color:#374151;
+}
+
+tr{
+    border-bottom:1px solid #eef2f7;
+}
+
+tr:last-child{
+    border-bottom:none;
+}
+
+tbody tr:hover{
+    background:#f1f5ff;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="header">
+    <h3>Dashboard Overview</h3>
+</div>
+
+<div class="cards">
+    <div class="card">
+        <h4>Open Issues</h4>
+        <span>{{ issue_count|default:"0" }}</span>
+    </div>
+
+    <div class="card">
+        <h4>Resolved Issues</h4>
+        <span>{{ resolved_issue|default:"0" }}</span>
+    </div>
+
+    <div class="card">
+        <h4>Pending Votes</h4>
+        <span>{{ pending_votes|default:"0" }}</span>
+    </div>
+</div>
+
+<div class="table-box">
+    <h4>Recent Issues</h4>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Title</th>
+                <th>Category</th>
+                <th>Flat</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for issue in issue1 %}
+            <tr>
+                <td>{{ issue.title }}</td>
+                <td>{{ issue.category }}</td>
+                <td>{{ issue.flat_number }}</td>
+            </tr>
+        {% empty %}
+            <tr>
+                <td colspan="3" style="text-align:center;color:#6b7280;">
+                    No issues reported yet.
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}

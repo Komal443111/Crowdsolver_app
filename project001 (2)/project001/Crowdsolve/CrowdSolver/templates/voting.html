@@ -1,0 +1,220 @@
+{% extends "base.html" %}
+{% block title %}Community Voting{% endblock %}
+
+{% block extra_css %}
+<style>
+.vote-page{
+    max-width:1200px;
+}
+
+/* HEADER */
+.vote-header{
+    margin-bottom:32px;
+}
+.vote-header h2{
+    margin:0;
+    font-size:32px;
+    font-weight:700;
+    color:#0f172a;
+}
+.vote-header p{
+    margin-top:8px;
+    font-size:18px;
+    color:#475569;
+}
+
+/* MEMBER FILTER */
+.member-section{
+    background:#ffffff;
+    padding:24px;
+    border-radius:16px;
+    box-shadow:0 8px 22px rgba(0,0,0,0.06);
+    margin-bottom:36px;
+}
+.member-section h3{
+    margin:0 0 14px;
+    font-size:20px;
+    color:#0f766e;
+}
+.member-list{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+}
+.member-list a{
+    background:#f0fdfa;
+    padding:10px 16px;
+    border-radius:999px;
+    font-size:16px;
+    color:#0f766e;
+    text-decoration:none;
+    font-weight:600;
+}
+.member-list a:hover{
+    background:#ccfbf1;
+}
+
+/* GRID */
+.vote-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(360px,1fr));
+    gap:28px;
+}
+
+/* CARD */
+.vote-card {
+    background: #ffffff;
+    width: 84%;
+    padding: 27px;
+    border-radius: 18px;
+    box-shadow: 0 14px 32px rgba(0,0,0,0.08);
+    display: flex;
+    flex-direction: column;
+}
+
+/* SOLUTION TEXT */
+.solution-text{
+    font-size:19px;
+    line-height:1.7;
+    color:#1f2937;
+    margin-bottom:22px;
+}
+
+/* STATS */
+.vote-stats{
+    display:flex;
+    justify-content:space-between;
+    font-size:16px;
+    font-weight:500;
+    color:#475569;
+    margin-bottom:14px;
+}
+
+/* PROGRESS BAR */
+.progress{
+    height:10px;
+    background:#e5e7eb;
+    border-radius:999px;
+    overflow:hidden;
+    margin-bottom:22px;
+}
+.progress-approve{
+    height:100%;
+    background:#0f766e;
+}
+
+/* ACTION */
+.vote-action{
+    background:#f8fafc;
+    padding:14px;
+    border-radius:14px;
+    text-align:center;
+    font-size:16px;
+    font-weight:500;
+    color:#475569;
+}
+
+
+/* BUTTONS */
+.vote-buttons{
+    display:flex;
+    gap:14px;
+}
+.vote-buttons form{
+    flex:1;
+}
+.vote-buttons button{
+    width:100%;
+    padding:14px;
+    border:none;
+    border-radius:16px;
+    font-size:16px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+.approve{
+    background:#0f766e;
+    color:#fff;
+}
+.approve:hover{background:#115e59;}
+
+.reject{
+    background:#dc2626;
+    color:#fff;
+}
+.reject:hover{background:#b91c1c;}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="vote-page">
+
+    <div class="vote-header">
+        <h2>Community Voting</h2>
+        <p>Vote on solutions and help select the best one</p>
+    </div>
+
+    {% if other_member %}
+    <div class="member-section">
+        <h3>View Solutions by Member</h3>
+        <div class="member-list">
+            {% for m in other_member %}
+                <a href="{% url 'voting' %}?user_id={{ m.id }}">{{ m.memberName }}</a>
+            {% endfor %}
+        </div>
+    </div>
+    {% endif %}
+
+    <div class="vote-grid">
+    {% for solution in solutions %}
+        <div class="vote-card">
+
+            <div class="solution-text">
+                {{ solution.solution_description }}
+            </div>
+
+            <div class="vote-stats">
+                <span>👍 {{ solution.approve_votes }} votes</span>
+                <span>👎 {{ solution.reject_votes }} votes</span>
+            </div>
+
+            <div class="progress">
+                <div class="progress-approve"
+                     style="width:{{ solution.approve_percentage }}%;">
+                </div>
+            </div>
+
+            {% if solution.user_voted %}
+                <div class="vote-action">You already voted</div>
+
+            {% elif solution.can_vote %}
+                <div class="vote-buttons">
+                    <form method="post" action="{% url 'voting' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="solution_id" value="{{ solution.id }}">
+                        <input type="hidden" name="choice" value="approve">
+                        <button class="approve">Approve</button>
+                    </form>
+
+                    <form method="post" action="{% url 'voting' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="solution_id" value="{{ solution.id }}">
+                        <input type="hidden" name="choice" value="reject">
+                        <button class="reject">Reject</button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="vote-action">Voting starts after 2+ approved solutions</div>
+            {% endif %}
+
+        </div>
+    {% empty %}
+        <p>No solutions available.</p>
+    {% endfor %}
+    </div>
+
+</div>
+
+{% endblock %}

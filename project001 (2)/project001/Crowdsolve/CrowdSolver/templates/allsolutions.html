@@ -1,0 +1,18 @@
+<html>
+    <head>
+        <title></title>
+    </head>
+    <body>
+        <h1>All Solutions</h1>
+        <div>
+            {% for solution in solutions %}
+                <div class="solution-card">
+                    <h3>Issue: {{ solution.issue.title }}</h3>
+                    <h2>solution: {{ solution.solution_description }}</h2>
+                  
+                </div>
+            {% empty %}
+                <p>No solutions available.</p>
+            {% endfor %}
+            </body>
+</html>

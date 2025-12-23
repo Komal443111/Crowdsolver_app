@@ -1,0 +1,3 @@
+- [ ] Update from_email in MemberSignup function in views.py to 'komalll4416@gmail.com'
+- [ ] Update from_email in secretary_login function in views.py to 'komalll4416@gmail.com'
+- [ ] Update DEFAULT_FROM_EMAIL in settings.py to 'komalll4416@gmail.com'

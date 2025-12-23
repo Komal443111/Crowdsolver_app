@@ -1,0 +1,193 @@
+{% extends "base.html" %}
+{% block title %}Notifications{% endblock %}
+
+{% block extra_css %}
+<style>
+/* PAGE WRAP */
+.notify-wrap{
+    max-width:1100px;
+}
+
+/* HEADINGS */
+.notify-wrap h2{
+    margin:0 0 18px;
+    font-size:24px;
+    font-weight:600;
+    color:#134e4a;
+}
+
+/* TABLE CARD */
+.table-card{
+    background:#ffffff;
+    padding:22px;
+    border-radius:18px;
+    box-shadow:0 12px 30px rgba(0,0,0,0.08);
+    margin-bottom:36px;
+}
+
+/* TABLE */
+table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:14px;
+}
+
+th{
+    background:#ecfeff;
+    color:#134e4a;
+    padding:12px;
+    text-align:left;
+    font-weight:500;
+}
+
+td{
+    padding:12px;
+    color:#334155;
+    vertical-align:top;
+}
+
+tr:not(:last-child){
+    border-bottom:1px solid #e5e7eb;
+}
+
+.desc{
+    max-width:320px;
+    line-height:1.6;
+}
+
+/* ACTIONS */
+.actions{
+    display:flex;
+    gap:10px;
+}
+
+.btn{
+    padding:8px 14px;
+    border-radius:999px;
+    font-size:13px;
+    text-decoration:none;
+    font-weight:500;
+    white-space:nowrap;
+}
+
+.btn-primary{
+    background:#0f766e;
+    color:#ffffff;
+}
+
+.btn-primary:hover{
+    background:#115e59;
+}
+
+.btn-secondary{
+    background:#e5e7eb;
+    color:#334155;
+}
+
+.btn-secondary:hover{
+    background:#d1d5db;
+}
+
+/* EMPTY */
+.empty{
+    text-align:center;
+    padding:30px;
+    font-size:15px;
+    color:#64748b;
+}
+</style>
+{% endblock %}
+
+{% block content %}
+
+<div class="notify-wrap">
+
+    <!-- ISSUE NOTIFICATIONS -->
+    <h2>Issue Notifications</h2>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Flat</th>
+                    <th>Submitted By</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for note in notify_issues %}
+                <tr>
+                    <td><strong>{{ note.title }}</strong></td>
+                    <td><div class="desc">{{ note.description }}</div></td>
+                    <td>{{ note.flat_number }}</td>
+                    <td>{{ note.created_by }}</td>
+                    <td>{{ note.created_at }}</td>
+                    <td>
+                        <div class="actions">
+                            <a href="{% url 'solution_view' note.id %}" class="btn btn-primary">
+                                Add Solution
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="empty">
+                        No issue notifications available
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <!-- PENDING SOLUTIONS -->
+    <h2>Pending Solutions for Approval</h2>
+
+    <div class="table-card">
+        <table>
+            <thead>
+                <tr>
+                    <th>Issue</th>
+                    <th>Solution</th>
+                    <th>Description</th>
+                    <th>Submitted By</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+            {% for solution in pending_solutions %}
+                <tr>
+                    <td><strong>{{ solution.issue.title }}</strong></td>
+                  
+                    <td><div class="desc">{{ solution.solution_description }}</div></td>
+                    <td>{{ solution.submitted_by }}</td>
+                    <td>{{ solution.issue.created_at }}</td>
+                    <td>
+                        <div class="actions">
+                            <a href="{% url 'approveSolution' solution.id %}" class="btn btn-primary">
+                                Approve
+                            </a>
+                        </div>
+                    </td>
+                </tr>
+            {% empty %}
+                <tr>
+                    <td colspan="6" class="empty">
+                        No pending solutions for approval
+                    </td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</div>
+
+{% endblock %}
